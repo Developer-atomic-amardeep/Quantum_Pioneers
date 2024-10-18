@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (registerForm) {
         registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const name = document.getElementById('name').value;
+            const name = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         if (data.message && (
                             data.message.trim() === "User created successfully" ||
-                            data.message.trim() === "User created successfully"
+                            data.message.trim() === "User  created successfully"
                         )) {
                             modalMessage.innerHTML = `
                                 <p class="text-success">Registration successful!</p>
@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (loginLink) {
         loginLink.addEventListener('click', function(e) {
+        
         });
     }
 });

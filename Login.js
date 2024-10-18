@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
     const registerLink = document.getElementById('register-link');
@@ -23,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (isSuccess) {
             popupContinue.onclick = function() {
-                window.location.href ="later.html";
+                window.location.href = 'second page.html';
             };
         } else {
             popupContinue.onclick = function() {
@@ -76,30 +75,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (registerLink) {
         registerLink.addEventListener('click', function(e) {
-            // The link will be used to navigate to register.html
+                                            // This link will navigate to Register.html
         });
     }
 
     checkLoginStatus();
 });
 
-// This function will be used to check login status
 function checkLoginStatus() {
     const authToken = localStorage.getItem('authToken');
     const currentPage = window.location.pathname.split('/').pop();
 
     if (!authToken) {
-        // If there will be unauth token and the user not exist on the login or register page, then this will redirect to login
+        // If there is  unauth token and user doesn't exist on the login or register page then they will be redirected to login
         if (currentPage !== 'Login.html' && currentPage !== 'Register.html' && currentPage !== 'First page.html') {
             window.location.href = 'Login.html';
         }
     } else {
-        // If there is an auth token and the user exists then it will redirect to final page
+        // If there is an auth token and the user exists on the login, register, or first page, they will be redirected to second page
         if (currentPage === 'Login.html' || currentPage === 'Register.html' || currentPage === 'First page.html') {
-            window.location.href = 'later.html';
+            window.location.href = 'Second page.html';
         }
     }
 }
 
-// Thus is used for exporting the function so it can be used in other scripts
 window.checkLoginStatus = checkLoginStatus;
