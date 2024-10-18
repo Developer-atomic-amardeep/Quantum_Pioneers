@@ -5,15 +5,53 @@ body {
 h1, h2, h3, h4, h5, h6 {
     color: #fcf9fa;
 }
+.carousel-item {
+    position: relative;
+}
 .carousel-item img {
     object-fit: cover;
     height: 400px;
 }
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: block !important;
+}
+.carousel-caption h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.carousel-caption h4, .carousel-caption h5 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+.carousel-caption p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
 .logo img {
     max-height: 50px;
 }
+.text-light{
+    font-family: "Baloo Bhai 2", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 30px;
+    font-style: normal;
+}
 header, footer {
     background-color: #15161D;
+}
+                                        /* The new class has been created to justify the text whenever required  */
+.jus{
+    text-align: justify;
+}
+.ql{
+    text-align: center;
 }
 .mb-4{
     color: #060001;
@@ -49,4 +87,26 @@ a:link{
 .dropdown-item:hover {
     background-color: #E4E7ED;
     color: #2B2D42;
+}
+
+                                                /* This is the media queries for responsive design */
+@media (max-width: 768px) {
+    .carousel-caption h2 {
+        font-size: 1.2rem;
+    }
+    .carousel-caption h4, .carousel-caption h5 {
+        font-size: 0.9rem;
+    }
+    .carousel-caption p {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-caption h2 {
+        font-size: 1rem;
+    }
+    .carousel-caption h4, .carousel-caption h5, .carousel-caption p {
+        font-size: 0.7rem;
+    }
 }
