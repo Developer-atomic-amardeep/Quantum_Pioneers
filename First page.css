@@ -20,7 +20,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.7);
-    display: block !important; /* Ensure it's always visible */
+    display: block !important;
 }
 .carousel-caption h2 {
     font-size: 1.5rem;
@@ -46,6 +46,7 @@ h1, h2, h3, h4, h5, h6 {
 header, footer {
     background-color: #15161D;
 }
+                                        /* The new class has been created to justify the text whenever required  */
 .jus{
     text-align: justify;
 }
@@ -88,7 +89,7 @@ a:link{
     color: #2B2D42;
 }
 
-/* Media queries for responsive design */
+                                                /* This is the media queries for responsive design */
 @media (max-width: 768px) {
     .carousel-caption h2 {
         font-size: 1.2rem;
