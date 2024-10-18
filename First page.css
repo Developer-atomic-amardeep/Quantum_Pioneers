@@ -1,0 +1,52 @@
+body {
+    background-color: #fff;
+    color: #E4E7ED;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: #fcf9fa;
+}
+.carousel-item img {
+    object-fit: cover;
+    height: 400px;
+}
+.logo img {
+    max-height: 50px;
+}
+header, footer {
+    background-color: #15161D;
+}
+.mb-4{
+    color: #060001;
+    font-weight: bold ;
+    font-size: large;
+}
+.btn-outline-primary {
+    border-width: medium;
+    font-weight: bold;
+    color: #D10024;
+    border-color: #D10024;
+}
+.btn-outline-primary:hover {
+    background-color: #D10024;
+    color: #FBFBFC;
+}
+.btn-secondary {
+    background-color: #1E1F29;
+    border-color: #1E1F29;
+}
+.dropdown-menu {
+    text-align: center;
+    background-color: #FBFBFC;
+}
+a:link{
+    color: red;
+    background-color: transparent;
+    text-decoration: none;
+}
+.dropdown-item {
+    color: #8D99AE;
+}
+.dropdown-item:hover {
+    background-color: #E4E7ED;
+    color: #2B2D42;
+}
