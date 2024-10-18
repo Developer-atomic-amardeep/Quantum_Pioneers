@@ -18,3 +18,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
+class EnquirySerializer(serializers.Serializer):
+    name = serializers.CharField()
+    mobile_number = serializers.CharField()
+    address = serializers.CharField()
+    message = serializers.CharField()
