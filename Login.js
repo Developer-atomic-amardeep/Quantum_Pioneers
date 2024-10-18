@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (isSuccess) {
             popupContinue.onclick = function() {
-                window.location.href = 'second page.html';
+                window.location.href = 'Second page.html';
             };
         } else {
             popupContinue.onclick = function() {
