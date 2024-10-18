@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift Me Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Login.css">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <img src="\images\logo.jpg" alt="Shift Me Logo" class="logo">
+        </div>
+        <div class="form-section">
+            <h1>Log in to your account</h1>
+            <p>Welcome back! Please enter your details.</p>
+            <form id="login-form">
+                <button type="button" class="google-sign-in">
+                    <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google logo">
+                    Sign in with Google
+                </button>
+                
+                <div class="or-divider">
+                    <span>or</span>
+                </div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email">
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="••••••••">
+                
+                <div class="remember-forgot">
+                    <label>
+                        <input type="checkbox" name="remember"> Remember for 30 days
+                    </label>
+                    <a href="#">Forgot password</a>
+                </div>
+                
+                <button type="submit" class="sign-in">Sign in</button>
+            </form>
+            <p class="sign-up">
+                Don't have an account? <a href="Register.html" id="register-link">Sign up</a>
+            </p>
+        </div>
+    </div>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2 id="popup-title"></h2>
+            <p id="popup-message"></p>
+            <button id="popup-continue" class="sign-in">Continue</button>
+        </div>
+    </div>
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading...</div>
+    </div>
+    <script src="later.html"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+        });
+    </script>
+</body>
+</html>
