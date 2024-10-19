@@ -3,9 +3,46 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from .models import CustomUser 
 from .serializers import UserRegistrationSerializer, UserLoginSerializer
+from django.db import IntegrityError
 
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                self.perform_create(serializer)
+                return Response({
+                    "status": "success",
+                    "message": "User registered successfully",
+                    "data": serializer.data
+                }, status=status.HTTP_201_CREATED)
+            except IntegrityError as e:
+                error_message = str(e)
+                if "username" in error_message:
+                    return Response({
+                        "status": "error",
+                        "message": "A user with that username already exists.",
+                        "field": "username"
+                    }, status=status.HTTP_400_BAD_REQUEST)
+                elif "email" in error_message:
+                    return Response({
+                        "status": "error",
+                        "message": "A user with that email address already exists.",
+                        "field": "email"
+                    }, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    return Response({
+                        "status": "error",
+                        "message": "An error occurred while registering the user.",
+                    }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({
+                "status": "error",
+                "message": "Invalid data provided",
+                "errors": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLoginView(generics.GenericAPIView):
     serializer_class = UserLoginSerializer

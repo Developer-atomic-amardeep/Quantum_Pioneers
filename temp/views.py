@@ -52,3 +52,24 @@ class EnquiryView(APIView):
             except Exception as e:
                 return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+from .models import PackerAndMover
+from .serializers import PackerAndMoverSerializer
+
+class PackerAndMoverListCreateView(generics.ListCreateAPIView):
+    queryset = PackerAndMover.objects.all()
+    serializer_class = PackerAndMoverSerializer
+
+    def get_queryset(self):
+        queryset = PackerAndMover.objects.all()
+        city = self.request.query_params.get('city', None)
+        if city is not None:
+            queryset = queryset.filter(city__iexact=city)
+        return queryset
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

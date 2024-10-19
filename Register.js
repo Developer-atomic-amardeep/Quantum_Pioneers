@@ -1,10 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     const registerForm = document.getElementById('register-form');
     const loginLink = document.getElementById('login-link');
+    const loadingOverlay = document.getElementById('loading-overlay');
     const registrationModal = new bootstrap.Modal(document.getElementById('registrationModal'));
     const modalMessage = document.getElementById('modalMessage');
     const goToLoginBtn = document.getElementById('goToLoginBtn');
-    const loadingOverlay = document.getElementById('loading-overlay');
+
+    // Create notification container
+    const notificationContainer = document.createElement('div');
+    notificationContainer.className = 'notification-container';
+    document.body.appendChild(notificationContainer);
 
     function showLoading() {
         loadingOverlay.style.display = 'flex';
@@ -12,6 +17,67 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function hideLoading() {
         loadingOverlay.style.display = 'none';
+    }
+
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        
+        const content = document.createElement('div');
+        content.className = 'notification-content';
+        content.innerHTML = message;
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'notification-close';
+        closeBtn.innerHTML = '×';
+        closeBtn.onclick = () => notification.remove();
+
+        notification.appendChild(content);
+        notification.appendChild(closeBtn);
+        notificationContainer.appendChild(notification);
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            notification.classList.add('fade-out');
+            setTimeout(() => notification.remove(), 300);
+        }, 5000);
+    }
+
+    function handleRegistrationResponse(responseData) {
+        console.log('Response Data:', responseData);
+
+        if (responseData.status === 'success') {
+            // Show success message in modal
+            modalMessage.innerHTML = 'User registered successfully! Please login to continue.';
+            goToLoginBtn.style.display = 'block';
+            registrationModal.show();
+            return;
+        }
+
+        if (responseData.status === 'error') {
+            const errors = responseData.errors;
+            const errorMessages = [];
+            
+            if (errors.username) {
+                errorMessages.push(errors.username[0]);
+            }
+            
+            if (errors.email) {
+                errorMessages.push(errors.email[0]);
+            }
+            
+            if (errorMessages.length > 0) {
+                // Show error message in modal
+                modalMessage.innerHTML = errorMessages.join('<br>');
+                goToLoginBtn.style.display = 'none';
+                registrationModal.show();
+            } else {
+                // Show general error message in modal
+                modalMessage.innerHTML = responseData.message || 'Registration failed';
+                goToLoginBtn.style.display = 'none';
+                registrationModal.show();
+            }
+        }
     }
 
     if (registerForm) {
@@ -25,55 +91,30 @@ document.addEventListener('DOMContentLoaded', function() {
             if (name && email && password && confirmPassword) {
                 if (password === confirmPassword) {
                     showLoading();
+
+                    const userData = {
+                        username: name,
+                        email: email,
+                        password: password
+                    };
+
+                    console.log('Sending registration data:', userData);
+
                     fetch('http://127.0.0.1:8000/api/register/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            username: name,  // Changed from 'name' to 'username'
-                            email: email,
-                            password: password
-                        })
+                        body: JSON.stringify(userData)
                     })
-                    .then(response => {
-                        console.log('Response status:', response.status);
-                        console.log('Response headers:', response.headers);
-                        return response.json().catch(error => {
-                            console.error('Error parsing JSON:', error);
-                            throw new Error('Invalid JSON response');
-                        });
-                    })
+                    .then(response => response.json())
                     .then(data => {
-                        console.log('Response data:', data);
-                        console.log('Message type:', typeof data.message);
-                        console.log('Message content:', data.message);
-                        
-                        if (data.message && (
-                            data.message.trim() === "User created successfully" ||
-                            data.message.trim() === "User  created successfully"
-                        )) {
-                            modalMessage.innerHTML = `
-                                <p class="text-success">Registration successful!</p>
-                                <p>You can now log in with your newly created credentials.</p>
-                            `;
-                            goToLoginBtn.style.display = 'block';
-                            registerForm.reset();
-                        } else {
-                            modalMessage.innerHTML = `
-                                <p class="text-warning">Registration successful, but with an unexpected response.</p>
-                                <p>Please try logging in with your new credentials.</p>
-                            `;
-                            goToLoginBtn.style.display = 'block';
-                        }
-                        registrationModal.show();
+                        handleRegistrationResponse(data);
                     })
                     .catch(error => {
-                        console.error('Error:', error);
-                        modalMessage.innerHTML = `
-                            <p class="text-danger">Registration failed.</p>
-                            <p>Error: ${error.message}</p>
-                        `;
+                        console.error('Registration Error:', error);
+                        // Show error in modal
+                        modalMessage.innerHTML = 'An error occurred during registration. Please try again.';
                         goToLoginBtn.style.display = 'none';
                         registrationModal.show();
                     })
@@ -81,12 +122,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         hideLoading();
                     });
                 } else {
-                    modalMessage.innerHTML = '<p class="text-danger">Passwords do not match.</p>';
+                    // Show password mismatch in modal
+                    modalMessage.innerHTML = 'Passwords do not match.';
                     goToLoginBtn.style.display = 'none';
                     registrationModal.show();
                 }
             } else {
-                modalMessage.innerHTML = '<p class="text-danger">Please fill in all fields.</p>';
+                // Show missing fields in modal
+                modalMessage.innerHTML = 'Please fill in all fields.';
                 goToLoginBtn.style.display = 'none';
                 registrationModal.show();
             }
@@ -96,6 +139,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (loginLink) {
         loginLink.addEventListener('click', function(e) {
             // The link will now navigate naturally to index.html
+        });
+    }
+
+    // Add event listener for Go to Login button
+    if (goToLoginBtn) {
+        goToLoginBtn.addEventListener('click', function() {
+            window.location.href = 'Login.html';
         });
     }
 });
