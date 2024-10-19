@@ -88,8 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
         paginationContainer.innerHTML = '';
         for (let i = 1; i <= totalPages; i++) {
             const li = document.createElement('li');
-            li.className = page-item ${i === currentPage ? 'active' : ''};
-            li.innerHTML = <a class="page-link" href="#" data-page="${i}">${i}</a>;
+            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
             paginationContainer.appendChild(li);
         }
         attachPaginationListeners();
