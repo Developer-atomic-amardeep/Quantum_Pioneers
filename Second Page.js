@@ -1,6 +1,5 @@
-                                                        // DOM Content Loaded Event Listener
 document.addEventListener('DOMContentLoaded', function() {
-                                                            // DOM Element Selectors
+    // DOM Element Selectors
     const packersContainer = document.getElementById('packersContainer');
     const paginationContainer = document.getElementById('pagination');
     const enquiryForm = document.getElementById('enquiryForm');
@@ -13,8 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const sendButton = document.getElementById('sendButton');
     const editProfileForm = document.getElementById('editProfileForm');
     const logoutButton = document.getElementById('logoutButton');
+    const saveChangesButton = document.getElementById('saveChangesButton'); // Added this selector
 
-                                                    // Constants used
+    // Constants used
     const itemsPerPage = 4;
     const questions = [
         "What's the distance of your move in km?",
@@ -28,28 +28,32 @@ document.addEventListener('DOMContentLoaded', function() {
         "How many laborers do you think you'll need?"
     ];
 
-                                                    // Variables used
+    // Variables used
     let currentPage = 1;
     let totalPages = 0;
     let allPackers = [];
     let currentQuestion = 0;
     let answers = {};
 
-                                            // Create a Popup Message Element
+    // Create a Popup Message Element
     const popup = createPopupElement();
     document.body.appendChild(popup);
 
-                                            //This will fetch Packers and Movers Data
+    // This will fetch Packers and Movers Data
     fetchPackersAndMovers();
 
-                                                        // Event Listeners
+    // Event Listeners
     enquiryForm.addEventListener('submit', handleEnquirySubmit);
     costCalculatorButton.addEventListener('click', toggleCostCalculator);
     minimizeCalculator.addEventListener('click', toggleCostCalculator);
     sendButton.addEventListener('click', handleUserInput);
     userInput.addEventListener('keypress', handleEnterKey);
-    editProfileForm.addEventListener('submit', handleProfileUpdate);
     logoutButton.addEventListener('click', handleLogout);
+
+    // Add event listener for save changes button
+    if (saveChangesButton) {
+        saveChangesButton.addEventListener('click', handleProfileUpdate);
+    }
 
                                                 // Start the Cost Estimator conversation
     initializeCostEstimator();
@@ -143,6 +147,58 @@ document.addEventListener('DOMContentLoaded', function() {
         attachPaginationListeners();
     }
 
+    function handleProfileUpdate(e) {
+        e.preventDefault();
+        const name = document.getElementById('editName').value;
+        const email = document.getElementById('editEmail').value;
+        const password = document.getElementById('editPassword').value;
+
+        // Show loading indicator
+        loadingIndicator.style.display = 'flex';
+
+        // Prepare the data to be sent
+        const updateData = {
+            name: name,
+            email: email
+        };
+        
+        // Only include password if it's not empty
+        if (password.trim() !== '') {
+            updateData.password = password;
+        }
+
+        // Send PUT request to the API
+        fetch('http://127.0.0.1:8000/api/register/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updateData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            showPopup('Profile updated successfully!', true);
+            
+            // Update local storage with new user data
+            if (data.name) localStorage.setItem('userName', data.name);
+            if (data.email) localStorage.setItem('userEmail', data.email);
+            
+            // Close the modal
+            document.querySelector('#editProfileModal .btn-close').click();
+        })
+        .catch(error => {
+            showPopup('Error updating profile: ' + error.message, false);
+        })
+        .finally(() => {
+            loadingIndicator.style.display = 'none';
+        });
+    }
+
     function attachPaginationListeners() {
         const pageLinks = document.querySelectorAll('.page-link');
         pageLinks.forEach(link => {
@@ -157,29 +213,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function attachEnquiryListeners() {
         const enquiryButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
-        const selectedMoverInput = document.getElementById('selectedMover');
         enquiryButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const moverName = this.getAttribute('data-mover');
-                selectedMoverInput.value = moverName;
+                const selectedMoverInput = document.getElementById('selectedMover');
+                if (selectedMoverInput) {
+                    selectedMoverInput.value = moverName;
+                }
             });
         });
     }
 
     function handleEnquirySubmit(e) {
         e.preventDefault();
-
+        
+        // Updated formData to match the expected API format
         const formData = {
-            mover: document.getElementById('selectedMover').value,
+            packer_and_mover_name: document.getElementById('selectedMover').value,
             name: document.getElementById('name').value,
-            mobile: document.getElementById('mobile').value,
+            mobile_number: document.getElementById('mobile').value, // Changed 'mobile' to 'mobile_number'
             address: document.getElementById('address').value,
-            message: document.getElementById('message').value
+            message: document.getElementById('message').value || 'No message provided' // Added default message
         };
-
+        
         loadingIndicator.style.display = 'flex';
-
-        fetch('http://127.0.0.1:8000/api/contact/', {
+        
+        fetch('http://127.0.0.1:8000/api/enquiry/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -188,14 +247,20 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+                return response.json().then(err => {
+                    throw new Error(err.message || 'Network response was not ok');
+                });
             }
             return response.json();
         })
         .then(data => {
             showPopup('Enquiry sent successfully!', true);
-            document.getElementById('enquiryModal').querySelector('.btn-close').click();
-            enquiryForm.reset();
+            const modalElement = document.getElementById('enquiryModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) {
+                modal.hide();
+            }
+            document.getElementById('enquiryForm').reset();
         })
         .catch(error => {
             showPopup('Error sending enquiry: ' + error.message, false);
@@ -302,6 +367,110 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `).join('');
     }
+    function handleProfileUpdate(e) {
+        e.preventDefault();
+        const name = document.getElementById('editName').value;
+        const email = document.getElementById('editEmail').value;
+        const password = document.getElementById('editPassword').value;
+
+        // Show loading indicator
+        loadingIndicator.style.display = 'flex';
+
+        // Prepare the data to be sent
+        const updateData = {
+            name: name,
+            email: email
+        };
+        
+        // Only include password if it's not empty
+        if (password.trim() !== '') {
+            updateData.password = password;
+        }
+
+        // Send PUT request to the API
+        fetch('http://127.0.0.1:8000/api/update-user/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updateData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            showPopup('Profile updated successfully!', true);
+            
+            // Update local storage with new user data
+            if (data.name) localStorage.setItem('userName', data.name);
+            if (data.email) localStorage.setItem('userEmail', data.email);
+            
+            // Close the modal
+            document.querySelector('#editProfileModal .btn-close').click();
+        })
+        .catch(error => {
+            showPopup('Error updating profile: ' + error.message, false);
+        })
+        .finally(() => {
+            loadingIndicator.style.display = 'none';
+        });
+    }
+    function populateEnquiries() {
+        const enquiriesList = document.getElementById('enquiriesList');
+        
+        // Show loading state
+        enquiriesList.innerHTML = '<div class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+
+        // Fetch enquiries from the API
+        fetch('http://127.0.0.1:8000/api/enquiries/')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch enquiries');
+                }
+                return response.json();
+            })
+            .then(enquiries => {
+                if (enquiries.length === 0) {
+                    enquiriesList.innerHTML = `
+                        <div class="alert alert-info" role="alert">
+                            No enquiries found.
+                        </div>
+                    `;
+                    return;
+                }
+
+                enquiriesList.innerHTML = enquiries.map(enquiry => `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">${escapeHtml(enquiry.packer_and_mover_name)}</h5>
+                            <p class="card-text">${escapeHtml(enquiry.message)}</p>
+                        </div>
+                    </div>
+                `).join('');
+            })
+            .catch(error => {
+                console.error('Error fetching enquiries:', error);
+                enquiriesList.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Failed to load enquiries. Please try again later.
+                    </div>
+                `;
+            });
+    }
+
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+    const enquiriesModal = document.getElementById('enquiriesModal');
+    enquiriesModal.addEventListener('show.bs.modal', populateEnquiries);
 
                                             // This will be used to call populate enquiries when the enquiries modal is shown
     $('#enquiriesModal').on('show.bs.modal', populateEnquiries);

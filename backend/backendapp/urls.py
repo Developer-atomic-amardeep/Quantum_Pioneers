@@ -7,6 +7,6 @@ urlpatterns = [
     path('login/', UserLoginView.as_view(), name='login'),
     path('enquiry/', EnquiryView.as_view(), name='enquiry'),
     path('packers-movers/', PackerAndMoverListCreateView.as_view(), name='packers-movers'),
-    path('enquiry/', EnquiryView.as_view(), name='enquiry'),
     path('enquiries/', EnquiryListView.as_view(), name='enquiry-list'),
+    path('update-user/', UserUpdateView.as_view(), name='update-user'),
 ]
