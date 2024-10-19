@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packers & Movers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Second Page.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400..800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="logo-space">
+                <img src="\images\Logo.png" alt="Logo" class="img-fluid">
+            </div>
+            <div class="welcome flex-grow-1 text-center">
+                <h2 class="text-light">ShiftMe | Hassle-free Moving Solutions</h2>
+            </div>
+            <div class="d-flex align-items-center btn">
+                <span class="text-light me-2">Delhi</span>
+                <img src="./images/Gps icon.png" alt="Location Icon" class="location-icon">
+            </div>
+            <div class="about-us">
+                <a href="#Contact"><button class="btn btn-outline-light">Contact Us</button></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="content container mt-4">
+        <h1 class="welcome text-center mb-4" style="color: #fff;">Top Packers and Movers in Delhi:</h1>
+        
+        <div id="packersContainer" class="row">
+                                            <!-- Packers & Movers entries will appear here -->
+        </div>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center" id="pagination">
+                                            <!-- The page  will be dynamically inserted here -->
+            </ul>
+        </nav>
+    </div>
+
+                                                <!--This is the Send Enquiry Modal -->
+    <div class="modal fade" id="enquiryModal" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="enquiryModalLabel">Send Enquiry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="enquiryForm">
+                        <input type="hidden" id="selectedMover" name="selectedMover">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label">Mobile Number</label>
+                            <input type="tel" pattern="[0-9]{10}" class="form-control" id="mobile" name="mobile" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message (Optional)</label>
+                            <textarea class="form-control" id="message" name="message" rows="2"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-lg-start text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 mb-md-0">
+                    <h5 class="text-uppercase">About Shift Me</h5>
+                    <p class="jus">
+                        Shiftmate is your trusted partner for all your moving needs. We connect you with reliable packers and movers to ensure a smooth relocation experience.
+                    </p>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-md-0 ql">
+                    <h5 class="text-uppercase">Quick Links</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="First page.html" class="text-light">Home</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-md-0">
+                    <a name="ContactUs"></a>
+                    <h5 class="text-uppercase">Contact Us</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="mailto:chaudharyvikrant456@gmail.com" class="text-light">Email: chaudharyvikrant456@gmail.com</a></li>
+                        <li><a href="tel:+916206815694" class="text-light">Phone: 6206815694</a></li>
+                        <li><p class="text-light">Address:  S-115, Ground floor, Badarpur, Delhi-110044</P></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="text-center p-3">
+            © 2024 Shiftmate. All rights reserved.
+        </div>
+    </footer>
+
+    <div id="loadingIndicator">
+        <div class="spinner"></div>
+        <div class="loading-text">Sending your enquiry...</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="later.js"></script>
+</body>
+</html>
