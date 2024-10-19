@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                         //this function is for Fetch packers and movers data from the backend
     function fetchPackersAndMovers() {
-        fetch('http://127.0.0.1:8000/api/get-packers-and-movers/?city=Delhi')
+        fetch('http://127.0.0.1:8000/api/packers-movers/?city=Delhi')
             .then(response => response.json())
             .then(data => {
                 allPackers = data;
@@ -88,8 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
         paginationContainer.innerHTML = '';
         for (let i = 1; i <= totalPages; i++) {
             const li = document.createElement('li');
-            li.className = page-item ${i === currentPage ? 'active' : ''};
-            li.innerHTML = <a class="page-link" href="#" data-page="${i}">${i}</a>;
+            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
             paginationContainer.appendChild(li);
         }
         attachPaginationListeners();
