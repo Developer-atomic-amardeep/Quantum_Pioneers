@@ -30,3 +30,37 @@ class PackerAndMoverSerializer(serializers.ModelSerializer):
     class Meta:
         model = PackerAndMover
         fields = '__all__'
+
+User = get_user_model()
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(write_only=True, required=False)
+
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'password']
+
+    def validate(self, data):
+        user = self.instance
+        errors = {}
+
+        if 'username' in data and data['username'] != user.username:
+            if User.objects.exclude(pk=user.pk).filter(username=data['username']).exists():
+                errors['username'] = "A user with that username already exists."
+
+        if errors:
+            raise serializers.ValidationError(errors)
+
+        return data
+
+    def update(self, instance, validated_data):
+        instance.username = validated_data.get('username', instance.username)
+        
+        if 'password' in validated_data:
+            instance.set_password(validated_data['password'])
+        
+        instance.save()
+        return instance
+

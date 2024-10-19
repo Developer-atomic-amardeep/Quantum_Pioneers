@@ -2,10 +2,48 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from .models import CustomUser 
-from .serializers import UserRegistrationSerializer, UserLoginSerializer
+from .serializers import UserRegistrationSerializer, UserLoginSerializer, UserUpdateSerializer
+from django.db import IntegrityError
+from rest_framework.permissions import IsAuthenticated
 
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                self.perform_create(serializer)
+                return Response({
+                    "status": "success",
+                    "message": "User registered successfully",
+                    "data": serializer.data
+                }, status=status.HTTP_201_CREATED)
+            except IntegrityError as e:
+                error_message = str(e)
+                if "username" in error_message:
+                    return Response({
+                        "status": "error",
+                        "message": "A user with that username already exists.",
+                        "field": "username"
+                    }, status=status.HTTP_400_BAD_REQUEST)
+                elif "email" in error_message:
+                    return Response({
+                        "status": "error",
+                        "message": "A user with that email address already exists.",
+                        "field": "email"
+                    }, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    return Response({
+                        "status": "error",
+                        "message": "An error occurred while registering the user.",
+                    }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({
+                "status": "error",
+                "message": "Invalid data provided",
+                "errors": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLoginView(generics.GenericAPIView):
     serializer_class = UserLoginSerializer
@@ -73,3 +111,62 @@ class PackerAndMoverListCreateView(generics.ListCreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .serializers import UserUpdateSerializer
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
+
+class UserUpdateView(generics.UpdateAPIView):
+    serializer_class = UserUpdateSerializer
+    permission_classes = []  # Remove IsAuthenticated
+
+    def get_object(self):
+        email = self.request.data.get('email')
+        try:
+            return User.objects.get(email=email)
+        except User.DoesNotExist:
+            return None
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if not instance:
+            return Response({
+                "status": "error",
+                "message": "User with this email does not exist."
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        
+        if not serializer.is_valid():
+            errors = serializer.errors
+            error_messages = []
+            if 'username' in errors and 'email' in errors:
+                error_messages.append("Both username and email are already in use.")
+            elif 'username' in errors:
+                error_messages.append("The provided username is already in use.")
+            elif 'email' in errors:
+                error_messages.append("The provided email is already in use.")
+            
+            for field, field_errors in errors.items():
+                for error in field_errors:
+                    if error not in error_messages:
+                        error_messages.append(f"{field.capitalize()}: {error}")
+
+            return Response({
+                "status": "error",
+                "message": "Unable to update user information.",
+                "errors": error_messages
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        self.perform_update(serializer)
+        return Response({
+            "status": "success",
+            "message": "User information updated successfully",
+            "data": serializer.data
+        })
