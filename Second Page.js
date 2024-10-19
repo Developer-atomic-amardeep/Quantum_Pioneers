@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                         //this function is for Fetch packers and movers data from the backend
     function fetchPackersAndMovers() {
-        fetch('http://127.0.0.1:8000/api/get-packers-and-movers/?city=Delhi')
+        fetch('http://127.0.0.1:8000/api/packers-movers/?city=Delhi')
             .then(response => response.json())
             .then(data => {
                 allPackers = data;
