@@ -1,0 +1,133 @@
+body {
+    background: url("./images/background\ image.jpg");
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+}
+
+.logo-space img {
+    max-height: 50px;
+}
+
+.align-items-center {
+    border-radius: 8px;
+    border-width: medium;
+    margin: 10px;
+    font-weight: bold;
+    color: #D10024;
+    border-color: #d3ff0d;
+}
+
+.welcome{
+    font-family: "Baloo Bhai 2", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 20px;
+    font-style: normal;  
+}
+
+.btn-outline-light {
+    border-width: medium;
+    font-weight: bold;
+    color: #D10024;
+    border-color: #D10024;
+}
+
+.location-icon {
+    width: 24px;
+    height: 24px;
+}
+.text-light{
+    font-family: "Baloo Bhai 2", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 30px;
+    font-style: normal;
+}
+header, footer {
+    background-color: #15161D;
+}
+                                        /* The new class has been created to justify the text whenever required  */
+.jus{
+    text-align: justify;
+}
+.ql{
+    text-align: center;
+}
+a:link{
+    text-decoration: none;
+}
+.packer-card {
+    color: #fff;
+    border: 2px solid #6704f1;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: black;
+    box-shadow: 0 4px 6px rgba(246, 64, 3, 0.859);
+}
+
+.btn-success {
+    background-color: #D10024;
+    border: 2px solid;
+    border-color: #d3ff0d;
+}
+
+.packer-image {
+    color: #6704f1;
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border: 1px solid #4608f0;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(246, 64, 3, 0.859);
+}
+
+#loadingIndicator {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+#customPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    z-index: 10000;
+}
