@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (registerForm) {
         registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const name = document.getElementById('username').value;
+            const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (loginLink) {
         loginLink.addEventListener('click', function(e) {
-        
+            // The link will now navigate naturally to index.html
         });
     }
 });
