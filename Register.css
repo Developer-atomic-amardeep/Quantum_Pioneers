@@ -5,7 +5,7 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background: linear-gradient(#cc4334,#ffffff);
+    background-color: #f0f0f0;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -135,6 +135,8 @@ button {
         font-size: 28px;
     }
 }
+
+/* Modal styles */
 .modal-content {
     font-family: 'Afacad', Arial, sans-serif;
 }

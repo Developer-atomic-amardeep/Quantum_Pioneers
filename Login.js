@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (isSuccess) {
             popupContinue.onclick = function() {
-                window.location.href = 'Second page.html';
+                window.location.href = 'second page.html';
             };
         } else {
             popupContinue.onclick = function() {
@@ -75,28 +75,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (registerLink) {
         registerLink.addEventListener('click', function(e) {
-                                            // This link will navigate to Register.html
+            // The link will now navigate naturally to register.html
         });
     }
 
+    // Check login status immediately
     checkLoginStatus();
 });
 
+// Function to check login status
 function checkLoginStatus() {
     const authToken = localStorage.getItem('authToken');
     const currentPage = window.location.pathname.split('/').pop();
 
     if (!authToken) {
-        // If there is  unauth token and user doesn't exist on the login or register page then they will be redirected to login
+        // If there's no auth token and the user is not on the login or register page, redirect to login
         if (currentPage !== 'Login.html' && currentPage !== 'Register.html' && currentPage !== 'First page.html') {
             window.location.href = 'Login.html';
         }
     } else {
-        // If there is an auth token and the user exists on the login, register, or first page, they will be redirected to second page
+        // If there is an auth token and the user is on the login, register, or first page, redirect to second page
         if (currentPage === 'Login.html' || currentPage === 'Register.html' || currentPage === 'First page.html') {
             window.location.href = 'Second page.html';
         }
     }
 }
 
+// Export the function so it can be used in other scripts
 window.checkLoginStatus = checkLoginStatus;
