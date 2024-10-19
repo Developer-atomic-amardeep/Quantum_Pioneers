@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import PackerAndMover
 
 User  = get_user_model()
 
@@ -25,8 +24,3 @@ class EnquirySerializer(serializers.Serializer):
     mobile_number = serializers.CharField()
     address = serializers.CharField()
     message = serializers.CharField()
-
-class PackerAndMoverSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PackerAndMover
-        fields = '__all__'
