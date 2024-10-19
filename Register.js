@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            name: name,
+                            username: name,  // Changed from 'name' to 'username'
                             email: email,
                             password: password
                         })
