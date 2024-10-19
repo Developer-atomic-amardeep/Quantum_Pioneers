@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Packers & Movers</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="Second Page.css">
+    <link rel="stylesheet" href="Second page.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400..800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="logo-space">
-                <img src="\images\Logo.png" alt="Logo" class="img-fluid">
+                <img src=".\images\Logo.png" alt="Logo" class="img-fluid">
             </div>
             <div class="welcome flex-grow-1 text-center">
                 <h2 class="text-light">ShiftMe | Hassle-free Moving Solutions</h2>
@@ -23,9 +24,19 @@
                 <span class="text-light me-2">Delhi</span>
                 <img src="./images/Gps icon.png" alt="Location Icon" class="location-icon">
             </div>
-            <div class="about-us">
-                <a href="#Contact"><button class="btn btn-outline-light">Contact Us</button></a>
-            </div>
+            <div class="dropdown">
+                <button class="btn btn-outline-light dropdown-toggle wi" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="./images/user.png" alt="Location Icon" class="location-icon"> My Profile
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="profileDropdown" >
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Details</a></li>
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#enquiriesModal">Enquiries Sent</a></li>
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#helpSupportModal">Help & Support</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#" id="logoutButton">Logout</a></li>
+                </ul>
+              </div>
+              <div></div>
         </div>
     </header>
 
@@ -33,7 +44,7 @@
         <h1 class="welcome text-center mb-4" style="color: #fff;">Top Packers and Movers in Delhi:</h1>
         
         <div id="packersContainer" class="row">
-                                            <!-- Packers & Movers entries will appear here -->
+                                            <!-- Packers & Movers data will appear here -->
         </div>
 
         <nav aria-label="Page navigation">
@@ -93,7 +104,6 @@
                     </ul>
                 </div>
                 <div class="col-lg-4 col-md-6 mb-md-0">
-                    <a name="ContactUs"></a>
                     <h5 class="text-uppercase">Contact Us</h5>
                     <ul class="list-unstyled mb-0">
                         <li><a href="mailto:chaudharyvikrant456@gmail.com" class="text-light">Email: chaudharyvikrant456@gmail.com</a></li>
@@ -112,8 +122,90 @@
         <div class="spinner"></div>
         <div class="loading-text">Sending your enquiry...</div>
     </div>
+                                                      <!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel">Edit Personal Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editProfileForm">
+            <div class="mb-3">
+              <label for="editName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="editName" required>
+            </div>
+            <div class="mb-3">
+              <label for="editEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="editEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="editPassword" class="form-label">New Password</label>
+              <input type="password" class="form-control" id="editPassword">
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+                                                    <!-- Enquiries Modal -->
+  <div class="modal fade" id="enquiriesModal" tabindex="-1" aria-labelledby="enquiriesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="enquiriesModalLabel">Enquiries Sent</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="enquiriesList">
+                                        <!-- Enquiries will be dynamically added here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+                                            <!-- Help & Support Modal -->
+  <div class="modal fade" id="helpSupportModal" tabindex="-1" aria-labelledby="helpSupportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="helpSupportModalLabel">Help & Support</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>For any assistance or support, please contact us at:</p>
+          <p>Email: chaudharyvikrant456@gmail.com</p>
+          <p>Phone: +91 6206815694</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="Second Page.js"></script>
+                                            <!-- Cost Calculator Button -->
+  <div id="costCalculatorButton" class="cost-calculator-button">
+    <i class="fas fa-calculator"> </i> <img src="./images/calc.png" alt="Location Icon" class="calculator-icon">
+  </div>
+
+                                              <!-- Cost Calculator -->
+  <div id="costCalculator" class="cost-calculator">
+    <div class="calculator-header">
+      <h3>Cost Estimator</h3>
+      <button id="minimizeCalculator" class="minimize-button"><b class="fas fa-minus"><h3>&times;</h3></b></button>
+    </div>
+    <div id="chatContainer" class="chat-container">
+                                        <!-- Chat messages will be added here -->
+    </div>
+    <div class="user-input">
+      <input type="text" id="userInput" placeholder="Type your answer here...">
+      <button id="sendButton">Send</button>
+    </div>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="Second Page.js"></script>
 </body>
 </html>
